@@ -1,0 +1,6 @@
+Open-Closed Principle
+
+O Princípio Aberto e Fechado (Open-Closed Principle) afirma que uma classe deve ser aberta
+para extensão, permitindo que novos comportamentos sejam adicionados por meio de herança,
+mas fechada para modificação, ou seja, o código não deve ser alterado uma vez que seus
+comportamentos estão definidos
