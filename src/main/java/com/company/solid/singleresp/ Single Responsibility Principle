@@ -1,5 +1,5 @@
 Single Responsibility Principle
 
 Single Responsibility Principle este conceito diz que uma classe deve ser pensada para que
-durante sua criação seus principios nao sejam violados ou seja essa classe nao deve ter apenas uma
+durante sua criação seus principios nao sejam violados ou seja essa classe deve ter apenas uma
 responsabilidade

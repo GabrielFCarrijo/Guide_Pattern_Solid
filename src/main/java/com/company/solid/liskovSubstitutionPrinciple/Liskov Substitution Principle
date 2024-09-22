@@ -1,0 +1,13 @@
+Liskov Substitution Principle
+
+O Princípio da Substituição de Liskov é simples de entender.
+Suponhamos que temos uma classe chamada Cachorro, e dentro dessa classe temos um método
+chamado latir(). Se criarmos uma nova classe chamada Gato, e fizermos essa nova classe
+herdar de Cachorro e, ao invés de latir, o método latir() da classe Gato emitir um miado,
+estaremos quebrando o Princípio da Substituição de Liskov. Isso acontece porque a classe
+derivada (Gato) alterou o comportamento esperado da classe base (Cachorro), o que causa
+inconsistências no código.
+
+Em resumo, uma subclasse deve poder ser usada no lugar de sua superclasse sem que o
+comportamento do programa seja alterado. Quando mudamos o comportamento original de um
+método herdado, como no exemplo acima, quebramos esse princípio.
