@@ -1,5 +1,7 @@
 Single Responsibility Principle
 
-Single Responsibility Principle este conceito diz que uma classe deve ser pensada para que
-durante sua criação seus principios nao sejam violados ou seja essa classe deve ter apenas uma
-responsabilidade
+O Single Responsibility Principle (SRP) afirma que uma classe deve ter apenas uma responsabilidade. Isso significa que ela deve ser projetada de maneira a evitar violar esse princípio durante sua criação.
+
+Para ilustrar, pense em um esfregão. Ele é projetado para esfregar, mas não deve ser usado para varrer. Assim, se tentarmos usar um esfregão para varrer, estaremos quebrando o princípio da responsabilidade única. Da mesma forma, uma classe que realiza múltiplas funções torna-se mais difícil de manter e testar, pois mudanças em uma responsabilidade podem afetar outras.
+
+Em resumo, cada classe deve se concentrar em uma única tarefa, facilitando a manutenção e a legibilidade do código.

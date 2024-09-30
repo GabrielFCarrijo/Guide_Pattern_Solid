@@ -1,0 +1,17 @@
+Interface Segregation Principle
+
+O Interface Segregation Principle (Princípio da Segregação de Interfaces) diz que os clientes
+não devem ser forçados a implementar métodos que eles não precisam. Isso pode parecer confuso,
+mas o conceito é relativamente simples.
+
+Pense em uma interface chamada Contas, que contém os métodos calcularIPTU() e calcularIPVA().
+Agora imagine que temos uma classe chamada Pessoa, que implementa essa interface.
+O problema é que, se essa pessoa tem apenas um carro, ela não deveria ser obrigada
+a implementar o método calcularIPTU() (que está relacionado a propriedades, como casas).
+Da mesma forma, se ela tem uma casa e não um carro, não faz sentido ser forçada a implementar
+calcularIPVA().
+
+Esse princípio nos diz que as interfaces devem ser divididas em partes menores,
+para que as classes implementem apenas o que realmente faz sentido para elas.
+Isso torna o código mais flexível e fácil de manter, evitando que classes sejam obrigadas
+a lidar com métodos irrelevantes.

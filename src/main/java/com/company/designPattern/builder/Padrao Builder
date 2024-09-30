@@ -1,0 +1,11 @@
+O padrão Builder é utilizado quando precisamos criar objetos complexos
+que possuem muitos atributos, o que pode gerar confusão e tornar o código
+difícil de manter. Esse padrão permite construir objetos de maneira mais clara
+e controlada, ao invés de passar diversos parâmetros em um único construtor,
+o que melhora tanto a legibilidade quanto a resiliência do código.
+
+Ele facilita a criação de instâncias de objetos passo a passo, adicionando apenas
+os atributos necessários, sem precisar lidar com construtores longos e difíceis de ler.
+
+Hoje em dia o builder é muito facilidato pelo lombook pela rapida implementação, apenas colocar a anotação que ele
+ja faz tudo por de baixo dos panos assim facilitando a utilização
