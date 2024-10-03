@@ -1,0 +1,51 @@
+No Factory Method, a superclasse (no caso, DocumentFactory) não sabe de antemão qual documento será criado.
+Ela delega essa responsabilidade para as subclasses (PDFDocumentFactory, WordDocumentFactory), que sabem como criar seus
+respectivos objetos. Assim, o método createDocument() nas subclasses cria o objeto específico necessário.
+
+Essa abordagem permite uma maior flexibilidade e facilita a adição de novos tipos de documentos sem modificar o código
+da superclasse ou do cliente, promovendo o uso de polimorfismo
+
+exemplo:
+
+// Classe abstrata que define o Factory Method
+abstract class DocumentFactory {
+    // Factory Method
+    public abstract Document createDocument();
+
+    public void openDocument() {
+        // Lógica para abrir um documento
+        Document doc = createDocument();
+        doc.open();
+    }
+}
+
+// Subclasses que implementam o método createDocument()
+class PDFDocumentFactory extends DocumentFactory {
+    public Document createDocument() {
+        return new PDFDocument();  // Cria um documento PDF
+    }
+}
+
+class WordDocumentFactory extends DocumentFactory {
+    public Document createDocument() {
+        return new WordDocument();  // Cria um documento Word
+    }
+}
+
+// Interface para os documentos
+interface Document {
+    void open();
+}
+
+// Implementação dos tipos de documento
+class PDFDocument implements Document {
+    public void open() {
+        System.out.println("Opening PDF Document");
+    }
+}
+
+class WordDocument implements Document {
+    public void open() {
+        System.out.println("Opening Word Document");
+    }
+}

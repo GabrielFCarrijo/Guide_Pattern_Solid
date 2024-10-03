@@ -1,0 +1,20 @@
+Simple Factory no Design Pattern pode ser vista como uma forma de encapsular a criação de objetos, separando a responsabilidade
+de instanciar classes específicas da lógica principal
+
+Encapsulamento da criação de objetos: A Simple Factory encapsula a lógica de criação de objetos dentro de uma classe fábrica,
+removendo essa responsabilidade das classes que utilizam esses objetos. Isso facilita alterações futuras, como a troca
+de implementações ou instâncias sem impactar o código que as consome.
+
+um exemplo interessante:
+
+class PizzaFactory {
+    public Pizza createPizza(String type) {
+        if (type.equals("cheese")) {
+            return new CheesePizza();
+        } else if (type.equals("pepperoni")) {
+            return new PepperoniPizza();
+        } else {
+            return null;
+        }
+    }
+}
