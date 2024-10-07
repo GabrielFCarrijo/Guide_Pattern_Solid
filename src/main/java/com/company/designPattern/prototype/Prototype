@@ -1,0 +1,50 @@
+O padrão de projeto Prototype permite a criação de novos objetos clonando
+instâncias existentes, ao invés de instanciá-las diretamente.
+Isso é útil quando a criação do objeto é custosa ou complexa, ou quando você deseja
+criar cópias independentes de objetos que já possuem um estado definido.
+O objeto é responsável por se clonar, geralmente implementando um método clone.
+
+Exemplo em codigo
+
+interface Prototype extends Cloneable {
+    Prototype clone();
+}
+
+class Car implements Prototype {
+    private String model;
+    private String color;
+
+    public Car(String model, String color) {
+        this.model = model;
+        this.color = color;
+    }
+
+    @Override
+    public Car clone() {
+        try {
+            return (Car) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Car [model=" + model + ", color=" + color + "]";
+    }
+}
+
+public class PrototypeExample {
+    public static void main(String[] args) {
+        Car originalCar = new Car("Sedan", "Red");
+
+        Car clonedCar = originalCar.clone();
+
+        System.out.println("Original Car: " + originalCar);
+        System.out.println("Cloned Car: " + clonedCar);
+    }
+}
+
+Deve sair  = Original Car: Car [model=Sedan, color=Red]
+             Cloned Car: Car [model=Sedan, color=Red]
+
