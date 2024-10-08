@@ -7,37 +7,31 @@ da superclasse ou do cliente, promovendo o uso de polimorfismo
 
 exemplo:
 
-// Classe abstrata que define o Factory Method
 abstract class DocumentFactory {
-    // Factory Method
     public abstract Document createDocument();
 
     public void openDocument() {
-        // Lógica para abrir um documento
         Document doc = createDocument();
         doc.open();
     }
 }
 
-// Subclasses que implementam o método createDocument()
 class PDFDocumentFactory extends DocumentFactory {
     public Document createDocument() {
-        return new PDFDocument();  // Cria um documento PDF
+        return new PDFDocument();
     }
 }
 
 class WordDocumentFactory extends DocumentFactory {
     public Document createDocument() {
-        return new WordDocument();  // Cria um documento Word
+        return new WordDocument();
     }
 }
 
-// Interface para os documentos
 interface Document {
     void open();
 }
 
-// Implementação dos tipos de documento
 class PDFDocument implements Document {
     public void open() {
         System.out.println("Opening PDF Document");

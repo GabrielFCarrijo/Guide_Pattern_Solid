@@ -1,0 +1,53 @@
+Pelo que entendi o abstract factory é uma forma de trabalhar com varios
+objetos e fazer com que o cliente so tenha acesso a coisas que fazem
+sentido a ele. Para entender esse exemplo pode ajudar
+
+Imagine que você está desenvolvendo uma interface gráfica e tenha dois estilos
+de interface: claro e escuro. Cada estilo possui botões e caixas de diálogo
+personalizados. Usando o Abstract Factory, você pode ter uma fábrica para criar
+todos os componentes do tema claro e outra para o tema escuro.
+
+public interface GUIFactory {
+    Button createButton();
+    Dialog createDialog();
+}
+
+public class LightThemeFactory implements GUIFactory {
+    public Button createButton() {
+        return new LightButton();
+    }
+    public Dialog createDialog() {
+        return new LightDialog();
+    }
+}
+
+public class DarkThemeFactory implements GUIFactory {
+    public Button createButton() {
+        return new DarkButton();
+    }
+    public Dialog createDialog() {
+        return new DarkDialog();
+    }
+}
+
+public class Application {
+    private GUIFactory factory;
+
+    public Application(GUIFactory factory) {
+        this.factory = factory;
+    }
+
+    public void createUI() {
+        Button button = factory.createButton();
+        Dialog dialog = factory.createDialog();
+    }
+}
+
+Aqui, o cliente (a classe Application) só interage com a GUIFactory.
+Dependendo da fábrica concreta fornecida (LightThemeFactory ou DarkThemeFactory),
+ele obterá diferentes implementações de botões e diálogos sem precisar modificar o
+código para acomodar novos estilos. Isso torna o código mais flexível e fácil de estender.
+
+O Abstract Factory garante que o cliente só interaja com objetos que são relevantes
+e esconda as complexidades de criação, promovendo o princípio da inversão de dependência,
+uma das diretrizes dos princípios SOLID.
