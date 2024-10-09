@@ -1,0 +1,46 @@
+O padrão Singleton garante que uma classe tenha apenas uma única instância
+durante toda a execução do programa, fornecendo um ponto global de acesso a
+essa instância. Isso é útil para centralizar o controle de recursos compartilhados.
+Ele é implementado geralmente com um construtor privado e um método de acesso estático.
+
+Um exemplo:
+
+Early implementation pq a instancia é criada imediatamente no momento que a classe
+é chamada
+
+public class EarlySingleton {
+    private static final EarlySingleton instance = new EarlySingleton();
+
+    private EarlySingleton() {}
+
+    public static EarlySingleton getInstance() {
+        return instance;
+    }
+}
+
+
+Lazy implementation pq a instancia é criada somente quando necessaria
+
+public class Singleton {
+    private static Singleton instance;
+
+    private Singleton() {}
+
+    public static Singleton getInstance() {
+        if (instance == null) {
+            instance = new Singleton();
+        }
+        return instance;
+    }
+
+    public void showMessage() {
+        System.out.println("Exemplo de Singleton!");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Singleton singleton = Singleton.getInstance();
+        singleton.showMessage();
+    }
+}
