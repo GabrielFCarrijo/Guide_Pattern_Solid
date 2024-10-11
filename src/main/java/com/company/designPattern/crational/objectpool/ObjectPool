@@ -1,0 +1,52 @@
+O Object Pool é um design pattern que consiste em manter um conjunto
+de objetos pré-inicializados e reutilizáveis, ao invés de criar e destruir
+objetos constantemente. Isso é especialmente útil quando a criação de novos objetos
+é custosa em termos de tempo ou recursos, como em conexões de banco de dados, threads,
+ou operações que demandam muita memória.
+
+Quando você tem objetos que são caros de criar (por exemplo, abrir conexões de rede,
+ou instanciar objetos grandes), ao invés de criar novos objetos repetidamente, você os
+reaproveita. Um pool de objetos gerencia essa reutilização.
+
+Dependendo da forma que vc usar ele pode se tornar um gargalo na aplicacao
+entar deve ser usado com cuidado
+
+public class ConnectionPool {
+    private List<Connection> availableConnections = new ArrayList<>();
+    private List<Connection> usedConnections = new ArrayList<>();
+    private static final int MAX_POOL_SIZE = 10;
+
+    // Inicializa o pool com conexões
+    public static ConnectionPool create() {
+        List<Connection> connections = new ArrayList<>(MAX_POOL_SIZE);
+        for (int i = 0; i < MAX_POOL_SIZE; i++) {
+            connections.add(createNewConnection());
+        }
+        return new ConnectionPool(connections);
+    }
+
+    private ConnectionPool(List<Connection> connections) {
+        availableConnections = connections;
+    }
+
+    // Pega uma conexão disponível
+    public Connection getConnection() {
+        if (availableConnections.isEmpty()) {
+            throw new RuntimeException("No available connections!");
+        }
+        Connection connection = availableConnections.remove(availableConnections.size() - 1);
+        usedConnections.add(connection);
+        return connection;
+    }
+
+    // Devolve a conexão ao pool
+    public boolean releaseConnection(Connection connection) {
+        availableConnections.add(connection);
+        return usedConnections.remove(connection);
+    }
+
+    private static Connection createNewConnection() {
+        // Criar uma nova conexão ao banco de dados
+        return new Connection();
+    }
+}

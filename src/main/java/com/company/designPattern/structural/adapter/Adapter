@@ -1,0 +1,47 @@
+O design pattern Adapter é uma maneira de permitir que duas classes que não
+seriam compatíveis trabalhem juntas, adaptando a interface de uma classe para
+que ela possa ser utilizada por outra.
+
+Classe Adaptada: Esta é a classe que você deseja usar, mas que não é compatível
+com o código existente. Por exemplo, pode ser uma classe Cidade que possui uma
+interface específica.
+
+Classe Adapter: Esta classe "adapta" a interface da classe Cidade para que ela
+se encaixe na interface que o cliente espera. A classe Adapter pode estender a
+classe Cidade ou compor um objeto Cidade.
+
+Cliente: O cliente é o código que utiliza a interface esperada.
+
+// Classe que o cliente espera usar
+class Endereco {
+    private String rua;
+    private String numero;
+
+    public Endereco(String rua, String numero) {
+        this.rua = rua;
+        this.numero = numero;
+    }
+}
+
+// Classe que não é compatível
+class Cidade {
+    private String nome;
+    private String estado;
+
+    public Cidade(String nome, String estado) {
+        this.nome = nome;
+        this.estado = estado;
+    }
+
+}
+
+// Classe Adapter
+class CidadeAdapter extends Endereco {
+    private Cidade cidade;
+
+    public CidadeAdapter(Cidade cidade) {
+        super(cidade.getNome(), cidade.getEstado()); // Adaptando para a interface de Endereco
+        this.cidade = cidade;
+    }
+
+}
