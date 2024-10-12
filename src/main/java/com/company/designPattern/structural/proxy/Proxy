@@ -1,0 +1,65 @@
+O padrão Proxy é um padrão de projeto estrutural que fornece um substituto ou
+representante de outro objeto para controlar o acesso a ele. Ele pode ser visto
+como um intermediário, ou seja, um objeto que atua como uma "cópia controlada" do
+objeto real, mas com responsabilidades extras, como controle de acesso, cache, ou até
+mesmo a criação tardia do objeto real. Porém, ao contrário de ser apenas uma cópia, o
+proxy pode ter seu próprio comportamento, seja para proteger, modificar ou otimizar o
+acesso ao objeto real.
+
+Imagine que você tem um sistema que faz operações pesadas, como carregar imagens
+grandes de um banco de dados ou de um servidor. O padrão Proxy poderia ser usado para
+carregar essas imagens de forma preguiçosa (lazy loading), ou seja, apenas quando elas
+forem realmente necessárias.
+
+public interface Imagem {
+    void exibir();
+}
+
+public class ImagemReal implements Imagem {
+    private String caminhoArquivo;
+
+    public ImagemReal(String caminhoArquivo) {
+        this.caminhoArquivo = caminhoArquivo;
+        carregarImagemDoDisco(caminhoArquivo);
+    }
+
+    private void carregarImagemDoDisco(String caminhoArquivo) {
+        System.out.println("Carregando " + caminhoArquivo);
+    }
+
+    @Override
+    public void exibir() {
+        System.out.println("Exibindo " + caminhoArquivo);
+    }
+}
+
+public class ProxyImagem implements Imagem {
+    private ImagemReal imagemReal;
+    private String caminhoArquivo;
+
+    public ProxyImagem(String caminhoArquivo) {
+        this.caminhoArquivo = caminhoArquivo;
+    }
+
+    @Override
+    public void exibir() {
+        if (imagemReal == null) {
+            // Carrega a imagem real apenas quando necessário
+            imagemReal = new ImagemReal(caminhoArquivo);
+        }
+        imagemReal.exibir();
+    }
+}
+
+public class Cliente {
+    public static void main(String[] args) {
+        Imagem imagem = new ProxyImagem("imagem_grande.jpg");
+
+        System.out.println("Primeira chamada:");
+        imagem.exibir();  // Carrega e exibe a imagem
+
+        System.out.println("\nSegunda chamada:");
+        imagem.exibir();  // Exibe a imagem sem recarregar
+    }
+}
+

@@ -1,0 +1,40 @@
+Facade é um dos padrões de projeto (Design Patterns) estruturais, cujo principal
+objetivo é fornecer uma interface simplificada para um sistema mais complexo, agrupando
+várias chamadas de diferentes subsistemas em um único ponto de acesso.
+
+Imagine um sistema de e-commerce onde várias operações são necessárias para processar um pedido:
+validação de estoque, pagamento, envio, etc. O Facade pode coordenar essas operações.
+
+SEM O FACADE
+
+EstoqueService estoque = new EstoqueService();
+PagamentoService pagamento = new PagamentoService();
+EnvioService envio = new EnvioService();
+
+boolean disponivel = estoque.verificarDisponibilidade(produto);
+if (disponivel) {
+    pagamento.processarPagamento(cliente, pedido);
+    envio.despacharPedido(pedido);
+}
+
+
+COM O FACADE
+
+public class PedidoFacade {
+    private EstoqueService estoque;
+    private PagamentoService pagamento;
+    private EnvioService envio;
+
+    public PedidoFacade() {
+        this.estoque = new EstoqueService();
+        this.pagamento = new PagamentoService();
+        this.envio = new EnvioService();
+    }
+
+    public void processarPedido(Cliente cliente, Pedido pedido) {
+        if (estoque.verificarDisponibilidade(pedido.getProduto())) {
+            pagamento.processarPagamento(cliente, pedido);
+            envio.despacharPedido(pedido);
+        }
+    }
+}

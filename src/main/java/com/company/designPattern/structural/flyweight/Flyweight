@@ -1,0 +1,46 @@
+O padrão Flyweight é um padrão de projeto estrutural que tem como principal objetivo
+minimizar o uso de memória ao compartilhar o máximo possível de dados entre objetos
+semelhantes. Ele não foca exatamente em ter várias instâncias de objetos, mas sim em
+reduzir o número de instâncias através do compartilhamento.
+
+Imagine um jogo onde você tem milhões de árvores com cores e formas semelhantes.
+Você pode usar o Flyweight para criar uma única instância de uma árvore com um
+conjunto de atributos comuns (como tipo de árvore, cor da folha, tipo de tronco) e,
+em seguida, passar as coordenadas de posição da árvore como estado extrínseco.
+
+// Interface Flyweight
+public interface Arvore {
+    void exibir(int x, int y);
+}
+
+// Implementação Flyweight
+public class ArvoreFlyweight implements Arvore {
+    private final String cor;
+    private final String tipo;
+
+    public ArvoreFlyweight(String cor, String tipo) {
+        this.cor = cor;
+        this.tipo = tipo;
+    }
+
+    @Override
+    public void exibir(int x, int y) {
+        System.out.println("Exibindo árvore do tipo " + tipo + " de cor " + cor + " na posição (" + x + ", " + y + ")");
+    }
+}
+
+// Fábrica de Flyweights
+import java.util.HashMap;
+import java.util.Map;
+
+public class ArvoreFactory {
+    private static final Map<String, Arvore> arvoreCache = new HashMap<>();
+
+    public static Arvore getArvore(String cor, String tipo) {
+        String chave = cor + "-" + tipo;
+        if (!arvoreCache.containsKey(chave)) {
+            arvoreCache.put(chave, new ArvoreFlyweight(cor, tipo));
+        }
+        return arvoreCache.get(chave);
+    }
+}
