@@ -1,0 +1,49 @@
+O design pattern Decorator é um padrão estrutural que permite adicionar
+responsabilidades (ou funcionalidades) a um objeto de forma dinâmica, sem modificar
+a sua classe original. Ele faz isso envolvendo o objeto original com outro objeto que
+oferece novas funcionalidades.
+
+// Componente
+interface Mensagem {
+    String formatar();
+}
+
+// Componente Concreto
+class MensagemSimples implements Mensagem {
+    private String mensagem;
+
+    public MensagemSimples(String mensagem) {
+        this.mensagem = mensagem;
+    }
+
+    public String formatar() {
+        return mensagem;
+    }
+}
+
+// Decorator
+abstract class MensagemDecorator implements Mensagem {
+    protected Mensagem mensagemDecorada;
+
+    public MensagemDecorator(Mensagem mensagemDecorada) {
+        this.mensagemDecorada = mensagemDecorada;
+    }
+
+    public String formatar() {
+        return mensagemDecorada.formatar();
+    }
+}
+
+// Decorador Concreto que adiciona HTML
+class MensagemHTMLDecorator extends MensagemDecorator {
+
+    public MensagemHTMLDecorator(Mensagem mensagemDecorada) {
+        super(mensagemDecorada);
+    }
+
+    @Override
+    public String formatar() {
+        return "<html>" + super.formatar() + "</html>";
+    }
+}
+

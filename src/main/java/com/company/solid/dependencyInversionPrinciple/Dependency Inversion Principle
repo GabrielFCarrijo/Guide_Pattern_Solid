@@ -1,6 +1,5 @@
 Dependency Inversion Principle
 
-Dependency Inversion Principle
 Modularidade: O princípio incentiva a separação de responsabilidades, onde módulos
 de alto nível (como regras de negócio) não estão diretamente acoplados a módulos de
 baixo nível (como acesso a banco de dados ou serviços externos). Isso facilita a

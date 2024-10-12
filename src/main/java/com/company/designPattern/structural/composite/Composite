@@ -1,0 +1,59 @@
+O design pattern Composite é um padrão estrutural que trata a composição de objetos em
+uma estrutura de árvore para representar hierarquias do tipo "parte-todo".
+Esse padrão permite que você trate objetos individuais (folhas) e composições de objetos
+(nós ou compostos) de maneira uniforme.
+
+O objetivo principal do Composite é permitir que você trabalhe com objetos simples e
+compostos de maneira uniforme. Ou seja, um objeto composto pode ser tratado da mesma forma
+que um objeto individual. Isso é muito útil em situações onde você tem uma estrutura hierárquica,
+como uma árvore de componentes ou uma estrutura de diretórios.
+
+// Componente
+interface ArquivoComponent {
+    void mostrarDetalhes();
+}
+
+// Folha
+class Arquivo implements ArquivoComponent {
+    private String nome;
+
+    public Arquivo(String nome) {
+        this.nome = nome;
+    }
+
+    @Override
+    public void mostrarDetalhes() {
+        System.out.println("Arquivo: " + nome);
+    }
+}
+
+// Composto
+class Diretorio implements ArquivoComponent {
+    private String nome;
+    private List<ArquivoComponent> filhos = new ArrayList<>();
+
+    public Diretorio(String nome) {
+        this.nome = nome;
+    }
+
+    public void adicionar(ArquivoComponent arquivo) {
+        filhos.add(arquivo);
+    }
+
+    public void remover(ArquivoComponent arquivo) {
+        filhos.remove(arquivo);
+    }
+
+    @Override
+    public void mostrarDetalhes() {
+        System.out.println("Diretório: " + nome);
+        for (ArquivoComponent filho : filhos) {
+            filho.mostrarDetalhes();
+        }
+    }
+}
+
+ArquivoComponent é a interface do Componente, que define o método mostrarDetalhes.
+Arquivo é a Folha, que implementa o comportamento de um arquivo individual.
+Diretorio é o Composto, que pode conter uma lista de outros ArquivoComponent
+(arquivos ou diretórios) e delega a chamada ao método mostrarDetalhes para cada filho.

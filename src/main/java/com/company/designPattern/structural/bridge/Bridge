@@ -1,0 +1,56 @@
+O objetivo do Bridge é separar a abstração da implementação, de modo que ambas
+possam ser desenvolvidas e alteradas de maneira independente.
+Isso é especialmente útil quando você deseja que a classe abstrata (a interface) possa mudar
+sem afetar as classes concretas que a implementam.
+
+// Implementor
+interface Cor {
+    void preencher();
+}
+
+// Concrete Implementor
+class Vermelho implements Cor {
+    public void preencher() {
+        System.out.println("Preenchendo com a cor vermelha.");
+    }
+}
+
+class Azul implements Cor {
+    public void preencher() {
+        System.out.println("Preenchendo com a cor azul.");
+    }
+}
+
+// Abstração
+abstract class Forma {
+    protected Cor cor;
+
+    public Forma(Cor cor) {
+        this.cor = cor;
+    }
+
+    public abstract void desenhar();
+}
+
+// Refined Abstraction
+class Circulo extends Forma {
+    public Circulo(Cor cor) {
+        super(cor);
+    }
+
+    public void desenhar() {
+        System.out.print("Desenhando um círculo. ");
+        cor.preencher();
+    }
+}
+
+class Quadrado extends Forma {
+    public Quadrado(Cor cor) {
+        super(cor);
+    }
+
+    public void desenhar() {
+        System.out.print("Desenhando um quadrado. ");
+        cor.preencher();
+    }
+}
