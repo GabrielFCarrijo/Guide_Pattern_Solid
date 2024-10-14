@@ -1,0 +1,83 @@
+O padrão Chain of Responsibility (Corrente de Responsabilidade) é um padrão de design
+comportamental que permite que um pedido passe por uma corrente de manipuladores, onde
+cada um tem a chance de processar o pedido ou passá-lo adiante para o próximo na cadeia.
+Com isso, os objetos podem processar ou delegar o trabalho sem saber qual é o próximo objeto
+a lidar com o pedido.
+
+Esse padrão promove o princípio de desacoplamento, já que o remetente de uma solicitação não
+precisa saber qual objeto na cadeia processará a solicitação. Ele é útil para sistemas que têm
+múltiplas camadas ou condições de processamento, onde diferentes responsabilidades estão
+distribuídas entre várias classes.
+
+Interface comum para os manipuladores:
+public abstract class SuporteHandler {
+    protected SuporteHandler proximo;
+
+    public void setProximo(SuporteHandler proximo) {
+        this.proximo = proximo;
+    }
+
+    public abstract void handleRequest(String problema);
+}
+
+Manipulador concreto 1: Suporte básico
+public class SuporteBasico extends SuporteHandler {
+    @Override
+    public void handleRequest(String problema) {
+        if (problema.equals("Senha esquecida")) {
+            System.out.println("Suporte básico: Problema resolvido - Resetando senha.");
+        } else {
+            System.out.println("Suporte básico: Não posso resolver, encaminhando para o suporte técnico.");
+            if (proximo != null) {
+                proximo.handleRequest(problema);
+            }
+        }
+    }
+}
+
+Manipulador concreto 2: Suporte técnico
+public class SuporteTecnico extends SuporteHandler {
+    @Override
+    public void handleRequest(String problema) {
+        if (problema.equals("Problema de conexão")) {
+            System.out.println("Suporte técnico: Problema resolvido - Verificando conexão.");
+        } else {
+            System.out.println("Suporte técnico: Não posso resolver, encaminhando para o gerente.");
+            if (proximo != null) {
+                proximo.handleRequest(problema);
+            }
+        }
+    }
+}
+
+Manipulador concreto 3: Gerente
+public class Gerente extends SuporteHandler {
+    @Override
+    public void handleRequest(String problema) {
+        System.out.println("Gerente: Problema resolvido ou decisão tomada.");
+    }
+}
+
+
+public class Cliente {
+    public static void main(String[] args) {
+        // Criar os manipuladores
+        SuporteBasico suporteBasico = new SuporteBasico();
+        SuporteTecnico suporteTecnico = new SuporteTecnico();
+        Gerente gerente = new Gerente();
+
+        // Configurar a cadeia de responsabilidade
+        suporteBasico.setProximo(suporteTecnico);
+        suporteTecnico.setProximo(gerente);
+
+        // Fazer uma solicitação que a cadeia vai processar
+        System.out.println("Solicitação: Senha esquecida");
+        suporteBasico.handleRequest("Senha esquecida");
+
+        System.out.println("\nSolicitação: Problema de conexão");
+        suporteBasico.handleRequest("Problema de conexão");
+
+        System.out.println("\nSolicitação: Reclamação grave");
+        suporteBasico.handleRequest("Reclamação grave");
+    }
+}
