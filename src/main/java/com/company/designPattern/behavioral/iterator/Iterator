@@ -1,0 +1,74 @@
+O Iterator Pattern (Padrão Iterador) é um padrão comportamental que fornece um meio de
+acessar sequencialmente os elementos de uma coleção (como listas, conjuntos, ou qualquer
+estrutura de dados agregada) sem expor sua representação interna. Esse padrão é especialmente
+útil quando você deseja percorrer diferentes tipos de coleções de forma uniforme, sem precisar
+saber como a coleção é implementada por dentro.
+
+1. Iterator (Iterador):
+Interface que declara os métodos essenciais para percorrer a coleção.
+
+public interface Iterator<T> {
+    boolean hasNext();
+    T next();
+}
+
+2. ConcreteIterator (Iterador Concreto):
+Implementação específica para a lista de nomes.
+
+public class NomeIterator implements Iterator<String> {
+    private String[] nomes;
+    private int posicao = 0;
+
+    public NomeIterator(String[] nomes) {
+        this.nomes = nomes;
+    }
+
+    @Override
+    public boolean hasNext() {
+        return posicao < nomes.length && nomes[posicao] != null;
+    }
+
+    @Override
+    public String next() {
+        return nomes[posicao++];
+    }
+}
+
+3. Aggregate (Agregado):
+Interface ou classe abstrata que define o contrato para criar iteradores.
+
+public interface ColecaoNomes {
+    Iterator<String> criarIterator();
+}
+
+4. ConcreteAggregate (Agregado Concreto):
+Classe concreta que implementa ColecaoNomes e retorna um iterador para a sua coleção.
+
+public class ListaNomes implements ColecaoNomes {
+    private String[] nomes;
+    
+    public ListaNomes(String[] nomes) {
+        this.nomes = nomes;
+    }
+
+    @Override
+    public Iterator<String> criarIterator() {
+        return new NomeIterator(nomes);
+    }
+}
+
+5. Client (Cliente):
+Classe que utiliza o iterador para percorrer a coleção de forma independente de sua implementação interna.
+
+public class Main {
+    public static void main(String[] args) {
+        String[] nomes = {"Alice", "Bob", "Carol", "Dave"};
+        
+        ListaNomes lista = new ListaNomes(nomes);
+        Iterator<String> iterator = lista.criarIterator();
+        
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+    }
+}

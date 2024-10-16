@@ -1,0 +1,109 @@
+O State Pattern (Padrão de Estado) é um padrão comportamental que permite que um objeto
+altere seu comportamento quando seu estado interno muda. O objeto parece mudar de classe,
+pois seu comportamento varia de acordo com o estado em que se encontra, sem a necessidade de
+grandes estruturas condicionais, como if-else ou switch.
+
+1. State (Interface de Estado):
+
+Define as operações que variam de acordo com o estado do objeto.
+public interface Estado {
+    void pressionarPlay(PelayerContexto contexto);
+    void pressionarPausa(PelayerContexto contexto);
+}
+
+2. Concrete States (Estados Concretos):
+
+Cada classe de estado implementa o comportamento específico para aquele estado.
+
+    EstadoParado:
+public class EstadoParado implements Estado {
+    @Override
+    public void pressionarPlay(PelayerContexto contexto) {
+        System.out.println("Tocando música");
+        contexto.setEstado(new EstadoTocando());
+    }
+
+    @Override
+    public void pressionarPausa(PelayerContexto contexto) {
+        System.out.println("Já está parado.");
+    }
+}
+
+    EstadoTocando:
+public class EstadoTocando implements Estado {
+    @Override
+    public void pressionarPlay(PelayerContexto contexto) {
+        System.out.println("Já está tocando.");
+    }
+
+    @Override
+    public void pressionarPausa(PelayerContexto contexto) {
+        System.out.println("Música pausada");
+        contexto.setEstado(new EstadoPausado());
+    }
+}
+
+    EstadoPausado:
+public class EstadoPausado implements Estado {
+    @Override
+    public void pressionarPlay(PelayerContexto contexto) {
+        System.out.println("Retomando música");
+        contexto.setEstado(new EstadoTocando());
+    }
+
+    @Override
+    public void pressionarPausa(PelayerContexto contexto) {
+        System.out.println("Já está pausado.");
+    }
+}
+
+3. Context (Contexto):
+
+O objeto que muda de comportamento de acordo com seu estado interno. Ele mantém uma referência ao estado atual.
+public class PelayerContexto {
+    private Estado estadoAtual;
+
+    public PelayerContexto() {
+        this.estadoAtual = new EstadoParado();  // Estado inicial
+    }
+
+    public void setEstado(Estado novoEstado) {
+        this.estadoAtual = novoEstado;
+    }
+
+    public void pressionarPlay() {
+        estadoAtual.pressionarPlay(this);
+    }
+
+    public void pressionarPausa() {
+        estadoAtual.pressionarPausa(this);
+    }
+}
+
+4. Cliente (Testando a Aplicação):
+
+O cliente interage com o Context, que muda de estado conforme necessário.
+public class Main {
+    public static void main(String[] args) {
+        PelayerContexto player = new PelayerContexto();
+
+        // Tentando tocar a música
+        player.pressionarPlay();  // Tocando música
+
+        // Pausando a música
+        player.pressionarPausa();  // Música pausada
+
+        // Tentando retomar a música
+        player.pressionarPlay();  // Retomando música
+
+        // Pausando novamente
+        player.pressionarPausa();  // Música pausada
+    }
+}
+
+5. Saída do Programa
+
+Tocando música
+Música pausada
+Retomando música
+Música pausada

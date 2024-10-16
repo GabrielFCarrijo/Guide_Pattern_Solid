@@ -1,0 +1,59 @@
+O Null Object Pattern é um padrão de design comportamental que visa evitar
+verificações explícitas de nulidade no código ao introduzir um objeto neutro ou
+"nulo", mas funcional, em vez de usar um valor null. Esse objeto neutro (null object)
+segue a mesma interface ou herança da classe esperada, mas não faz nada ou fornece um
+comportamento padrão quando seus métodos são chamados.
+
+1. Interface de Ação:
+interface Acoes {
+    void executar();
+}
+
+2. Classe Concreta:
+
+Esta classe representa o comportamento real.
+class AcoesConcretas implements Acoes {
+    @Override
+    public void executar() {
+        System.out.println("Executando ações concretas.");
+    }
+}
+
+3. Null Object:
+
+Esta classe representa o comportamento neutro.
+class NullAcoes implements Acoes {
+    @Override
+    public void executar() {
+        System.out.println("Nenhuma ação a ser executada.");
+    }
+}
+
+4. Classe Cliente:
+
+Aqui está o código do cliente, que pode usar o objeto real ou o objeto nulo sem precisar verificar se é null.
+public class Cliente {
+    private Acoes acoes;
+
+    public Cliente(Acoes acoes) {
+        this.acoes = acoes;
+    }
+
+    public void executarAcoes() {
+        acoes.executar();
+    }
+}
+
+5. Main (Simulação):
+public class Main {
+    public static void main(String[] args) {
+        Acoes acoesValidas = new AcoesConcretas();
+        Acoes acoesNulas = new NullAcoes();
+
+        Cliente clienteComAcoes = new Cliente(acoesValidas);
+        Cliente clienteSemAcoes = new Cliente(acoesNulas);
+
+        clienteComAcoes.executarAcoes();  // Output: Executando ações concretas.
+        clienteSemAcoes.executarAcoes();  // Output: Nenhuma ação a ser executada.
+    }
+}

@@ -1,0 +1,97 @@
+O Memento Pattern (Padrão Memento) é um padrão comportamental que permite capturar e
+restaurar o estado anterior de um objeto sem violar o princípio de encapsulamento.
+Esse padrão é útil quando você deseja implementar funcionalidades como "desfazer" (undo) e
+"refazer" (redo), permitindo que o estado anterior de um objeto seja salvo e restaurado
+posteriormente.
+
+1. Memento:
+O memento armazena o estado do texto.
+
+public class TextoMemento {
+    private final String estadoTexto;
+
+    public TextoMemento(String estadoTexto) {
+        this.estadoTexto = estadoTexto;
+    }
+
+    public String getEstadoTexto() {
+        return estadoTexto;
+    }
+}
+
+2. Originator (Editor de Texto):
+O editor de texto é o objeto cujo estado será salvo e restaurado.
+
+public class EditorTexto {
+    private String texto;
+
+    public void escreverTexto(String novoTexto) {
+        this.texto = novoTexto;
+    }
+
+    public String getTexto() {
+        return texto;
+    }
+
+    public TextoMemento salvar() {
+        return new TextoMemento(texto);
+    }
+
+    public void restaurar(TextoMemento memento) {
+        this.texto = memento.getEstadoTexto();
+    }
+}
+
+3. Caretaker:
+O cuidador armazena os mementos e pode pedir ao editor para salvar ou restaurar seu estado.
+
+import java.util.Stack;
+
+public class CuidadorTexto {
+    private Stack<TextoMemento> historico = new Stack<>();
+
+    public void salvar(EditorTexto editor) {
+        historico.push(editor.salvar());
+    }
+
+    public void desfazer(EditorTexto editor) {
+        if (!historico.isEmpty()) {
+            editor.restaurar(historico.pop());
+        }
+    }
+}
+
+4. Client (Cliente):
+A classe que usa o memento para salvar e restaurar o estado do editor de texto.
+
+public class Main {
+    public static void main(String[] args) {
+        EditorTexto editor = new EditorTexto();
+        CuidadorTexto cuidador = new CuidadorTexto();
+
+        editor.escreverTexto("Primeira versão do texto.");
+        System.out.println("Texto atual: " + editor.getTexto());
+
+        // Salva o estado atual do editor
+        cuidador.salvar(editor);
+
+        // Modifica o texto
+        editor.escreverTexto("Segunda versão do texto.");
+        System.out.println("Texto atual: " + editor.getTexto());
+
+        // Salva o novo estado
+        cuidador.salvar(editor);
+
+        // Modifica o texto novamente
+        editor.escreverTexto("Terceira versão do texto.");
+        System.out.println("Texto atual: " + editor.getTexto());
+
+        // Desfaz a última modificação
+        cuidador.desfazer(editor);
+        System.out.println("Texto após desfazer: " + editor.getTexto());
+
+        // Desfaz novamente
+        cuidador.desfazer(editor);
+        System.out.println("Texto após desfazer: " + editor.getTexto());
+    }
+}

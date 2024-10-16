@@ -1,0 +1,106 @@
+O Visitor é um padrão de design comportamental que permite adicionar novas operações a
+objetos de uma hierarquia de classes sem modificar essas classes. Ele separa o algoritmo
+da estrutura de dados sobre a qual opera, permitindo que novas funcionalidades sejam
+implementadas sem alterar o código existente. Em vez disso, as funcionalidades são
+implementadas em um novo objeto chamado "visitor", que percorre os elementos da hierarquia.
+
+1. Interface Visitor:
+
+Define as operações que podem ser realizadas em cada tipo de elemento.
+interface ComputerPartVisitor {
+    void visit(CPU cpu);
+    void visit(Mouse mouse);
+    void visit(Teclado teclado);
+    void visit(Computer computer);  // Para a estrutura maior que contém todos os elementos
+}
+
+2. Element Interface:
+
+Define o método accept que permitirá o visitante acessar o elemento.
+interface ComputerPart {
+    void accept(ComputerPartVisitor visitor);
+}
+
+3. Elementos Concretos (Concrete Elements):
+
+Cada parte do computador implementa o método accept, permitindo que o visitante realize operações sobre eles.
+class CPU implements ComputerPart {
+    @Override
+    public void accept(ComputerPartVisitor visitor) {
+        visitor.visit(this);
+    }
+}
+
+class Mouse implements ComputerPart {
+    @Override
+    public void accept(ComputerPartVisitor visitor) {
+        visitor.visit(this);
+    }
+}
+
+class Teclado implements ComputerPart {
+    @Override
+    public void accept(ComputerPartVisitor visitor) {
+        visitor.visit(this);
+    }
+}
+
+class Computer implements ComputerPart {
+    ComputerPart[] parts;
+
+    public Computer() {
+        parts = new ComputerPart[] { new CPU(), new Mouse(), new Teclado() };
+    }
+
+    @Override
+    public void accept(ComputerPartVisitor visitor) {
+        for (ComputerPart part : parts) {
+            part.accept(visitor);  // Aceita o visitante em cada parte do computador
+        }
+        visitor.visit(this);  // Aceita o visitante para o próprio computador
+    }
+}
+
+4. Concrete Visitor:
+
+Implementa a lógica de visita para cada tipo de elemento da estrutura.
+class ComputerPartDisplayVisitor implements ComputerPartVisitor {
+
+    @Override
+    public void visit(CPU cpu) {
+        System.out.println("Exibindo CPU.");
+    }
+
+    @Override
+    public void visit(Mouse mouse) {
+        System.out.println("Exibindo Mouse.");
+    }
+
+    @Override
+    public void visit(Teclado teclado) {
+        System.out.println("Exibindo Teclado.");
+    }
+
+    @Override
+    public void visit(Computer computer) {
+        System.out.println("Exibindo Computador.");
+    }
+}
+
+5. Cliente (Main):
+
+O cliente cria um objeto Computer e um Visitor, e então passa o visitante para o computador.
+public class Main {
+    public static void main(String[] args) {
+        Computer computer = new Computer();
+        ComputerPartVisitor displayVisitor = new ComputerPartDisplayVisitor();
+        computer.accept(displayVisitor);  // Executa as visitas
+    }
+}
+
+6. Saída do Programa:
+
+Exibindo CPU.
+Exibindo Mouse.
+Exibindo Teclado.
+Exibindo Computador.

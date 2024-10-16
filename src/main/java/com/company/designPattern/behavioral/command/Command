@@ -1,0 +1,81 @@
+O Command Pattern (Padrão Command) é um dos padrões comportamentais do design de software.
+Ele tem como objetivo encapsular uma solicitação ou ação como um objeto, permitindo que você
+parametrize objetos com diferentes ações e facilite a execução, armazenamento, desfazer (undo)
+e enfileiramento dessas ações.
+
+1. Command Interface:
+A interface Command declara o método execute(), que será implementado pelos comandos concretos.
+
+public interface Command {
+    void execute();
+}
+
+2. ConcreteCommand:
+Aqui temos um comando concreto que liga as luzes. Ele delega a ação ao receptor, que é o
+objeto Luz.
+
+// ConcreteCommand
+public class LigarLuzCommand implements Command {
+    private Luz luz;
+
+    public LigarLuzCommand(Luz luz) {
+        this.luz = luz;
+    }
+
+    @Override
+    public void execute() {
+        luz.ligar();
+    }
+}
+
+3. Receiver (Receptor):
+O receptor é o objeto que realmente executa as ações, neste caso, a luz que pode ser ligada ou
+desligada.
+
+// Receiver
+public class Luz {
+    public void ligar() {
+        System.out.println("A luz foi ligada.");
+    }
+
+    public void desligar() {
+        System.out.println("A luz foi desligada.");
+    }
+}
+
+4. Invoker (Invocador):
+O invocador guarda uma referência para um comando e, quando solicitado, executa o comando.
+
+// Invoker
+public class ControleRemoto {
+    private Command command;
+
+    public void setCommand(Command command) {
+        this.command = command;
+    }
+
+    public void pressionarBotao() {
+        command.execute();
+    }
+}
+
+5. Client (Cliente):
+O cliente cria os comandos e associa os receptores aos comandos antes de entregá-los ao invocador.
+
+// Client
+public class Cliente {
+    public static void main(String[] args) {
+        // Receptor
+        Luz luz = new Luz();
+
+        // Command concreto
+        Command ligarLuz = new LigarLuzCommand(luz);
+
+        // Invoker
+        ControleRemoto controleRemoto = new ControleRemoto();
+        controleRemoto.setCommand(ligarLuz);
+
+        // Executando o comando
+        controleRemoto.pressionarBotao();
+    }
+}

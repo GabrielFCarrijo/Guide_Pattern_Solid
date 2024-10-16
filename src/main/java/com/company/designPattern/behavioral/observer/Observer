@@ -1,0 +1,103 @@
+O Observer Pattern (Padrão Observador) é um padrão comportamental que define uma
+relação de dependência "um-para-muitos" entre objetos, de forma que quando um objeto
+(o Sujeito ou Subject) muda de estado, todos os objetos dependentes (os Observadores ou Observers)
+são notificados e atualizados automaticamente. Esse padrão é comumente usado para implementar
+mecanismos de eventos ou notificações.
+
+1. Observer (Interface do Observador):
+Define o método que será chamado quando o estado do sujeito mudar.
+
+public interface Observer {
+    void atualizar(float temperatura);
+}
+
+2. Subject (Interface do Sujeito):
+Define os métodos para adicionar, remover e notificar observadores.
+
+import java.util.ArrayList;
+import java.util.List;
+
+public interface Subject {
+    void adicionarObservador(Observer o);
+    void removerObservador(Observer o);
+    void notificarObservadores();
+}
+
+3. EstacaoMeteorologica (Implementação do Sujeito):
+A estação meteorológica mantém uma lista de observadores e os notifica quando a temperatura muda.
+
+public class EstacaoMeteorologica implements Subject {
+    private List<Observer> observadores;
+    private float temperatura;
+
+    public EstacaoMeteorologica() {
+        this.observadores = new ArrayList<>();
+    }
+
+    @Override
+    public void adicionarObservador(Observer o) {
+        observadores.add(o);
+    }
+
+    @Override
+    public void removerObservador(Observer o) {
+        observadores.remove(o);
+    }
+
+    @Override
+    public void notificarObservadores() {
+        for (Observer o : observadores) {
+            o.atualizar(temperatura);
+        }
+    }
+
+    public void setTemperatura(float temperatura) {
+        this.temperatura = temperatura;
+        notificarObservadores();
+    }
+}
+
+4. DispositivoDeExibicao (Implementação do Observador):
+Cada dispositivo de exibição será notificado quando a temperatura mudar e exibirá o valor atualizado.
+
+public class DispositivoDeExibicao implements Observer {
+    private String nomeDispositivo;
+
+    public DispositivoDeExibicao(String nomeDispositivo) {
+        this.nomeDispositivo = nomeDispositivo;
+    }
+
+    @Override
+    public void atualizar(float temperatura) {
+        System.out.println(nomeDispositivo + " exibe a temperatura: " + temperatura + "ºC");
+    }
+}
+
+5. Cliente (Testando a Aplicação):
+O cliente cria uma estação meteorológica e vários dispositivos de exibição que serão notificados quando a temperatura mudar.
+
+public class Main {
+    public static void main(String[] args) {
+        EstacaoMeteorologica estacao = new EstacaoMeteorologica();
+
+        DispositivoDeExibicao celular = new DispositivoDeExibicao("Celular");
+        DispositivoDeExibicao computador = new DispositivoDeExibicao("Computador");
+
+        estacao.adicionarObservador(celular);
+        estacao.adicionarObservador(computador);
+
+        estacao.setTemperatura(25.5f);
+        estacao.setTemperatura(30.2f);
+
+        estacao.removerObservador(celular);
+        estacao.setTemperatura(28.3f);
+    }
+}
+
+5. Saída do Programa
+
+Celular exibe a temperatura: 25.5ºC
+Computador exibe a temperatura: 25.5ºC
+Celular exibe a temperatura: 30.2ºC
+Computador exibe a temperatura: 30.2ºC
+Computador exibe a temperatura: 28.3ºC

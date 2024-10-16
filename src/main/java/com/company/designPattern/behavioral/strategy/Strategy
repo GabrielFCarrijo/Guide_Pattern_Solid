@@ -1,0 +1,81 @@
+O Strategy Pattern (Padrão de Estratégia) é um padrão de design comportamental que
+permite definir uma família de algoritmos, encapsulá-los em classes separadas, e torná-los
+intercambiáveis. O padrão permite que o algoritmo varie independentemente dos clientes que o
+utilizam.
+
+1. Strategy (Interface de Estratégia):
+
+Define o método que todas as estratégias devem implementar.
+public interface CalculadoraFrete {
+    double calcular(double peso, String destino);
+}
+
+2. Concrete Strategies (Estratégias Concretas):
+
+Implementações específicas do algoritmo de cálculo de frete para diferentes transportadoras.
+
+    Correios:
+public class FreteCorreios implements CalculadoraFrete {
+    @Override
+    public double calcular(double peso, String destino) {
+        return peso * 10 + 30;
+    }
+}
+
+    FedEx:
+public class FreteFedEx implements CalculadoraFrete {
+    @Override
+    public double calcular(double peso, String destino) {
+        return peso * 15 + 50;
+    }
+}
+
+    UPS:
+public class FreteUPS implements CalculadoraFrete {
+    @Override
+    public double calcular(double peso, String destino) {
+        return peso * 20 + 40;
+    }
+}
+
+3. Context (Contexto):
+
+A classe que utiliza a estratégia selecionada. Ela possui uma referência para uma implementação da interface CalculadoraFrete e pode alternar entre diferentes estratégias conforme necessário.
+public class ServicoFrete {
+    private CalculadoraFrete estrategiaFrete;
+
+    public void setEstrategiaFrete(CalculadoraFrete estrategiaFrete) {
+        this.estrategiaFrete = estrategiaFrete;
+    }
+
+    public double calcularFrete(double peso, String destino) {
+        return estrategiaFrete.calcular(peso, destino);
+    }
+}
+
+4. Cliente (Testando a Aplicação):
+
+O cliente pode selecionar a estratégia que deseja usar, e o Context a executa.
+public class Main {
+    public static void main(String[] args) {
+        ServicoFrete servicoFrete = new ServicoFrete();
+
+        // Usando a estratégia dos Correios
+        servicoFrete.setEstrategiaFrete(new FreteCorreios());
+        System.out.println("Frete Correios: " + servicoFrete.calcularFrete(5, "São Paulo"));
+
+        // Mudando para a estratégia da FedEx
+        servicoFrete.setEstrategiaFrete(new FreteFedEx());
+        System.out.println("Frete FedEx: " + servicoFrete.calcularFrete(5, "São Paulo"));
+
+        // Mudando para a estratégia da UPS
+        servicoFrete.setEstrategiaFrete(new FreteUPS());
+        System.out.println("Frete UPS: " + servicoFrete.calcularFrete(5, "São Paulo"));
+    }
+}
+
+5. Saída do Programa
+
+Frete Correios: 80.0
+Frete FedEx: 125.0
+Frete UPS: 140.0

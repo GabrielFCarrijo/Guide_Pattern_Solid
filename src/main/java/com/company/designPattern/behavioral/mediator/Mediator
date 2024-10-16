@@ -1,0 +1,116 @@
+O Mediator Pattern (Padrão Mediador) é um padrão comportamental que facilita a
+comunicação entre objetos de maneira centralizada, evitando o acoplamento direto entre eles.
+No lugar de os objetos se comunicarem diretamente, eles fazem isso através de um mediador, que
+controla a interação. Isso promove uma melhor organização e torna o sistema mais flexível e fácil
+de manter.
+
+
+1. Mediator (Mediador):
+Define o contrato para que os componentes da interface possam se comunicar através dele.
+
+
+public interface Mediator {
+    void notificar(Componente remetente, String evento);
+}
+
+2. ConcreteMediator (Mediador Concreto):
+Implementa o método de comunicação entre os objetos.
+
+public class DialogoAutenticacao implements Mediator {
+    private BotaoLogin botaoLogin;
+    private CampoTexto campoUsuario;
+    private CampoTexto campoSenha;
+
+    public void setComponentes(BotaoLogin botaoLogin, CampoTexto campoUsuario, CampoTexto campoSenha) {
+        this.botaoLogin = botaoLogin;
+        this.campoUsuario = campoUsuario;
+        this.campoSenha = campoSenha;
+        
+        botaoLogin.setMediator(this);
+        campoUsuario.setMediator(this);
+        campoSenha.setMediator(this);
+    }
+
+    @Override
+    public void notificar(Componente remetente, String evento) {
+        if (remetente == botaoLogin && evento.equals("click")) {
+            validarLogin();
+        } else if (remetente == campoUsuario && evento.equals("input")) {
+            System.out.println("Usuário digitado: " + campoUsuario.getTexto());
+        } else if (remetente == campoSenha && evento.equals("input")) {
+            System.out.println("Senha digitada.");
+        }
+    }
+
+    private void validarLogin() {
+        if (!campoUsuario.getTexto().isEmpty() && !campoSenha.getTexto().isEmpty()) {
+            System.out.println("Login bem-sucedido!");
+        } else {
+            System.out.println("Campos de usuário ou senha vazios.");
+        }
+    }
+}
+
+3. Colleague (Colega):
+Define a interface dos componentes que irão se comunicar através do Mediator.
+
+public abstract class Componente {
+    protected Mediator mediator;
+
+    public void setMediator(Mediator mediator) {
+        this.mediator = mediator;
+    }
+
+    public abstract void dispararEvento(String evento);
+}
+
+4. ConcreteColleague (Componentes Concretos):
+Implementações concretas dos componentes que interagem.
+
+
+public class BotaoLogin extends Componente {
+    @Override
+    public void dispararEvento(String evento) {
+        System.out.println("Botão login pressionado.");
+        mediator.notificar(this, evento);
+    }
+}
+
+public class CampoTexto extends Componente {
+    private String texto;
+
+    public String getTexto() {
+        return texto;
+    }
+
+    public void setTexto(String texto) {
+        this.texto = texto;
+        dispararEvento("input");
+    }
+
+    @Override
+    public void dispararEvento(String evento) {
+        mediator.notificar(this, evento);
+    }
+}
+
+5. Client (Cliente):
+Aqui configuramos os componentes e o mediador.
+
+
+public class Main {
+    public static void main(String[] args) {
+        DialogoAutenticacao dialogo = new DialogoAutenticacao();
+
+        BotaoLogin botaoLogin = new BotaoLogin();
+        CampoTexto campoUsuario = new CampoTexto();
+        CampoTexto campoSenha = new CampoTexto();
+
+        dialogo.setComponentes(botaoLogin, campoUsuario, campoSenha);
+
+        campoUsuario.setTexto("JohnDoe");
+        campoSenha.setTexto("password123");
+
+        botaoLogin.dispararEvento("click");
+    }
+}

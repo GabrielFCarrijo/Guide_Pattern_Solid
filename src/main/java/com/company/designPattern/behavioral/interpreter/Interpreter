@@ -1,0 +1,78 @@
+O Interpreter Pattern (Padrão Interpreter) é um padrão comportamental de design de
+software que define uma maneira de interpretar linguagens ou expressões específicas de
+domínio (DSL - Domain-Specific Languages). Ele é utilizado principalmente quando você
+precisa interpretar ou avaliar sentenças, gramáticas ou expressões de uma linguagem.
+
+1. AbstractExpression:
+Define o contrato para o método interpret(), que deve ser implementado pelas subclasses.
+
+public interface Expressao {
+    int interpretar();
+}
+
+2. TerminalExpression (Números):
+Essa classe representa números na linguagem, que são os elementos terminais da expressão.
+
+public class Numero implements Expressao {
+    private int numero;
+
+    public Numero(int numero) {
+        this.numero = numero;
+    }
+
+    @Override
+    public int interpretar() {
+        return numero;
+    }
+}
+
+3. NonTerminalExpression (Operadores):
+Essa classe representa operações, como soma e subtração, que combinam duas outras expressões.
+
+// Expressão para soma
+public class Soma implements Expressao {
+    private Expressao esquerda;
+    private Expressao direita;
+
+    public Soma(Expressao esquerda, Expressao direita) {
+        this.esquerda = esquerda;
+        this.direita = direita;
+    }
+
+    @Override
+    public int interpretar() {
+        return esquerda.interpretar() + direita.interpretar();
+    }
+}
+
+// Expressão para subtração
+public class Subtracao implements Expressao {
+    private Expressao esquerda;
+    private Expressao direita;
+
+    public Subtracao(Expressao esquerda, Expressao direita) {
+        this.esquerda = esquerda;
+        this.direita = direita;
+    }
+
+    @Override
+    public int interpretar() {
+        return esquerda.interpretar() - direita.interpretar();
+    }
+}
+
+4. Client (Cliente):
+Agora, podemos criar uma expressão complexa como "3 + 5 - 2" e interpretá-la usando os objetos que criamos.
+
+public class Cliente {
+    public static void main(String[] args) {
+        // (3 + 5) - 2
+        Expressao expr = new Subtracao(
+            new Soma(new Numero(3), new Numero(5)),
+            new Numero(2)
+        );
+
+        int resultado = expr.interpretar();
+        System.out.println("Resultado: " + resultado);
+    }
+}

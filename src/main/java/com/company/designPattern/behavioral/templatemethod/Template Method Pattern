@@ -1,0 +1,93 @@
+O Template Method Pattern (Padrão de Método Template) é um padrão de design
+comportamental que define o esqueleto de um algoritmo em uma operação, postergando a
+definição de alguns passos para subclasses. Com esse padrão, as subclasses podem redefinir
+certos passos do algoritmo sem alterar sua estrutura geral.
+
+1. Classe Abstrata (Template):
+
+Define o esqueleto do algoritmo, que é o fluxo geral de um jogo.
+public abstract class Jogo {
+    
+    // Template Method
+    public final void jogar() {
+        iniciarJogo();
+        jogarTurno();
+        terminarJogo();
+    }
+
+    // Método abstrato para iniciar o jogo
+    abstract void iniciarJogo();
+
+    // Método abstrato para jogar um turno
+    abstract void jogarTurno();
+
+    // Método abstrato para terminar o jogo
+    abstract void terminarJogo();
+}
+
+2. Subclasses (Implementando os Passos Específicos):
+
+Cada jogo tem suas regras específicas, mas o fluxo básico é o mesmo.
+
+    Xadrez:
+public class Xadrez extends Jogo {
+    
+    @Override
+    void iniciarJogo() {
+        System.out.println("Iniciando jogo de Xadrez...");
+    }
+
+    @Override
+    void jogarTurno() {
+        System.out.println("Movendo as peças de Xadrez.");
+    }
+
+    @Override
+    void terminarJogo() {
+        System.out.println("Jogo de Xadrez terminado.");
+    }
+}
+
+    Futebol:
+public class Futebol extends Jogo {
+
+    @Override
+    void iniciarJogo() {
+        System.out.println("Iniciando jogo de Futebol...");
+    }
+
+    @Override
+    void jogarTurno() {
+        System.out.println("Jogando uma rodada de Futebol.");
+    }
+
+    @Override
+    void terminarJogo() {
+        System.out.println("Jogo de Futebol terminado.");
+    }
+}
+
+3. Cliente (Executando o Jogo):
+
+O cliente pode chamar o método template jogar() para iniciar o processo, sem se preocupar com os detalhes internos do jogo.
+public class Main {
+    public static void main(String[] args) {
+        Jogo xadrez = new Xadrez();
+        xadrez.jogar();  // Executa o fluxo do jogo de Xadrez
+
+        System.out.println();
+
+        Jogo futebol = new Futebol();
+        futebol.jogar();  // Executa o fluxo do jogo de Futebol
+    }
+}
+
+4. Saída do Programa
+
+Iniciando jogo de Xadrez...
+Movendo as peças de Xadrez.
+Jogo de Xadrez terminado.
+
+Iniciando jogo de Futebol...
+Jogando uma rodada de Futebol.
+Jogo de Futebol terminado.
